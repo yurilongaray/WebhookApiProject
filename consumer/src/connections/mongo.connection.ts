@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { createConnection } from 'typeorm';
 import { WebhookExecutionCollection } from '../collections/webhook.collection';
 
-export const MONGO_CONNECTION = 'mongo-view';
+export const MONGO_CONNECTION = 'mongodb_connection';
 
 @Injectable()
 export class MongoConnectionService {
@@ -14,7 +14,7 @@ export class MongoConnectionService {
             type: 'mongodb',
             host: 'localhost',
             port: 27017,
-            database: 'new_fleet',
+            database: 'db_test',
             entities: [
                 WebhookExecutionCollection
             ],

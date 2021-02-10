@@ -61,16 +61,16 @@ export class AppService {
 
 	private logStartingInfo(payload: EventPayload) {
 
-		const { webhook_config, client_id } = payload;
+		const { webhook_config } = payload;
 
-		this.logger.log(`Started Event: ${webhook_config.event}, Table: ${webhook_config.table}, Client_id: ${client_id}`);
+		this.logger.log(`Started Event: ${webhook_config.event}, Table: ${webhook_config.table}`);
 	}
 
 	private logFinishingInfo(payload: EventPayload) {
 
-		const { webhook_config, client_id} = payload;
+		const { webhook_config} = payload;
 
-		this.logger.log(`Finished Event: ${webhook_config.event}, Table: ${webhook_config.table}, Client_id: ${client_id}`);
+		this.logger.log(`Finished Event: ${webhook_config.event}, Table: ${webhook_config.table}`);
 	}
 
 	private async sendAndSave(payload: EventPayload) {
@@ -89,7 +89,6 @@ export class AppService {
 
 		const webhookRequestToSave = new WebhookExecutionCollection();
 
-		webhookRequestToSave.client_id = payload.client_id;
 		webhookRequestToSave.webhook_id = payload.webhook_config.id;
 		webhookRequestToSave.url = payload.webhook_config.url;
 		webhookRequestToSave.execution_date = new Date();

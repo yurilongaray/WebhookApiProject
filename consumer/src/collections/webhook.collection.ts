@@ -8,9 +8,6 @@ export class WebhookExecutionCollection {
 	public id: ObjectID;
 
 	@Column()
-	public client_id: number;
-
-	@Column()
 	public webhook_id: number;
 
 	@Column()

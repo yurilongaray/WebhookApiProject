@@ -13,7 +13,7 @@ async function bootstrap() {
     console.info('Active Connections', getConnectionManager());
 
     const app = await NestFactory.createMicroservice(AppModule, {
-        name: 'rabbit-mq-consumer',
+        name: 'WEBHOOK_CONSUMER',
         transport: Transport.RMQ,
         options: {
             urls: ['amqp://user:password@127.0.0.1:5672'],

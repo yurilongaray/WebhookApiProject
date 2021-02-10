@@ -47,7 +47,6 @@ export type WebhookError = {
 export type EventPayload = {
     data: Entity;
     old_data?: Entity;
-    client_id: number;
     webhook_config: WebhookTableConfig;
 };
 

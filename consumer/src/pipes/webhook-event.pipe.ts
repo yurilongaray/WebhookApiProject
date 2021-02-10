@@ -10,7 +10,6 @@ const EVENT_PAYLOAD_VALIDATION = Joi.object({
         then: Joi.object().required(),
         otherwise: Joi.object().optional().allow(null)
     }),
-    client_id: Joi.number().integer().required(),
     webhook_config: Joi.object({
         id: Joi.number().integer().required(),
         active: Joi.boolean().required(),
