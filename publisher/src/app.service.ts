@@ -28,13 +28,13 @@ export class AppService {
 		owner_by_id: null
 	}
 
-	public sendTest() {
+	public async sendTest() {
 
 		const data = { id: 1, name: 'newValue' };
 		const old_data = { id: 1, name: 'oldValue' };
 		const valueToSend = { data, old_data, webhook_config: this.webhook_config };
 
-		this.rabbitMQService.emit('edit', valueToSend);
+		await this.rabbitMQService.sendAsPromise('edit', valueToSend);
 
 		console.info('Sending value', valueToSend);
 

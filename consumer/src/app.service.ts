@@ -5,7 +5,7 @@ import { RequestBuilder } from './builders/request.builder';
 import { ResponseBuilder } from './builders/response.builder';
 import { startOfDay } from 'date-fns';
 import { WebhookExecutionCollection } from './collections/webhook.collection';
-import { MONGO_CONNECTION } from './connections/mongo.connection';
+// import { MONGO_CONNECTION } from './connections/mongo.connection';
 import { RmqContext } from '@nestjs/microservices';
 
 @Injectable()
@@ -39,6 +39,8 @@ export class AppService {
 		const originalMessage = context.getMessage();
 
 		await this.sendAndSave(payload);
+
+		await new Promise(res => setTimeout(res, 10000))
 
 		this.logFinishingInfo(payload);
 
@@ -74,15 +76,16 @@ export class AppService {
 	}
 
 	private async sendAndSave(payload: EventPayload) {
+		return;
 
 		const request = new RequestBuilder(payload).build();
 		const responseBuilder = new ResponseBuilder();
 
-		await this.sendRequest(request, responseBuilder);
+		// await this.sendRequest(request, responseBuilder);
 
 		const response = responseBuilder.build();
 
-		return this.saveWebhook(payload, request, response);
+		// return this.saveWebhook(payload, request, response);
 	}
 
 	private async saveWebhook(payload: EventPayload, request: Request, response: Response) {
@@ -99,33 +102,33 @@ export class AppService {
 		webhookRequestToSave.attempts = response.attempts;
 		webhookRequestToSave.error = response.error;
 
-		return getManager(MONGO_CONNECTION).save(webhookRequestToSave);
+		// return getManager(MONGO_CONNECTION).save(webhookRequestToSave);
 	}
 
-	private async sendRequest(request: Request, responseBuilder: ResponseBuilder): Promise<void> {
+	// private async sendRequest(request: Request, responseBuilder: ResponseBuilder): Promise<void> {
 
-		const { url, payload, config } = request;
+	// 	const { url, payload, config } = request;
 
-		try {
+	// 	try {
 
-			const response = await this.httpService.post(url, payload, config).toPromise<AxiosResponse>();
+	// 		const response = await this.httpService.post(url, payload, config).toPromise<AxiosResponse>();
 
-			responseBuilder.setResponse(response);
-		} catch (error) {
+	// 		responseBuilder.setResponse(response);
+	// 	} catch (error) {
 
-			responseBuilder.setError(error);
+	// 		responseBuilder.setError(error);
 
-			let attempts = responseBuilder.getAttempts();
+	// 		let attempts = responseBuilder.getAttempts();
 
-			if (attempts < this.max_attempts) {
+	// 		if (attempts < this.max_attempts) {
 
-				responseBuilder.incrementAttempts();
+	// 			responseBuilder.incrementAttempts();
 
-				return new Promise(resolve => {
+	// 			return new Promise(resolve => {
 
-					setTimeout(() => resolve(this.sendRequest(request, responseBuilder)), this.range_bewteen_requests);
-				});
-			}
-		}
-	}
+	// 				setTimeout(() => resolve(this.sendRequest(request, responseBuilder)), this.range_bewteen_requests);
+	// 			});
+	// 		}
+	// 	}
+	// }
 }

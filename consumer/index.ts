@@ -3,12 +3,12 @@ import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { getConnectionManager } from 'typeorm';
 import { AppModule } from './src/app.module';
-import { MongoConnectionService } from './src/connections/mongo.connection';
+// import { MongoConnectionService } from './src/connections/mongo.connection';
 import { AppInterceptor } from './src/app.interceptor';
 
 async function bootstrap() {
 
-    await new MongoConnectionService().connect();
+    // await new MongoConnectionService().connect();
 
     console.info('Active Connections', getConnectionManager());
 
@@ -16,7 +16,7 @@ async function bootstrap() {
         name: 'WEBHOOK_CONSUMER',
         transport: Transport.RMQ,
         options: {
-            urls: ['amqp://user:password@127.0.0.1:5672'],
+            urls: ['amqp://guest:guest@127.0.0.1:5672'],
             queue: 'webhook_queue',
             noAck: false
         }
