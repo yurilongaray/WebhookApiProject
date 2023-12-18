@@ -38,6 +38,10 @@ export class AppService {
 
 		console.info('Sending value', valueToSend);
 
+		const resp = await this.rabbitMQService.sendAsPromise('edit', valueToSend);
+
+		console.info('received value', 	resp);
+
 		return { status: 'ok', statusCode: 200 };
 	}
 }
