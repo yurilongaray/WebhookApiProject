@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Module } from '@nestjs/common';
 import { RabbitMQService } from './rabbitmq.service';
 
 @Module({
@@ -8,11 +8,13 @@ import { RabbitMQService } from './rabbitmq.service';
 			name: 'WEBHOOK_PUBLISHER',
 			transport: Transport.RMQ,
 			options: {
-				urls: ['amqp://user:password@127.0.0.1:5672'],
+				urls: ['amqp://guest:guest@127.0.0.1:5672'],
 				noAck: false,
-				queue: 'webhook_queue',
-				queueOptions: { durable: true }
-			}
+				queue: 'rpc-test-queue',
+				queueOptions: { durable: true,  },
+				
+			},
+			
 		}])
 	],
 	providers: [

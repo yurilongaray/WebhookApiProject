@@ -6,8 +6,10 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
 	@Get('test')
-	public test() {
+	public async test() {
 
-		return this.appService.sendTest();
+		console.log('started')
+		await this.appService.sendTest();
+		console.log('finished')
 	}
 }

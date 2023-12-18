@@ -1,7 +1,7 @@
 import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 import { WebhookExecutionPayload } from '../app.types';
 
-@Entity('webhook_execution')
+// @Entity('webhook_execution')
 export class WebhookExecutionCollection {
 
 	@ObjectIdColumn()
