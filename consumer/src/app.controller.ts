@@ -1,32 +1,67 @@
 import { Controller } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { WebhookEvent } from './app.enums';
 import { AppService } from './app.service';
-import { EventPayload } from './app.types';
-import { WebhookEventPipe } from './pipes/webhook-event.pipe';
 
 const { Create, Edit, Remove } = WebhookEvent;
 
 @Controller()
 export class AppController {
+  constructor(private readonly appService: AppService) {}
 
-	constructor(private readonly appService: AppService) { }
+  @RabbitRPC({
+    exchange: 'rpc-test-exchange',
+    routingKey: Create,
+    queue: 'rpc-test-queue',
+    queueOptions: {
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
+    },
 
-	@EventPattern(Create)
-	public async createEvent(@Payload(WebhookEventPipe) payload: EventPayload, @Ctx() context: RmqContext) {
+    // queueOptions: {
+    //   channel: 'channel-1',
+    // },
+    // connection: 'conn1',
+  })
+  public async createEvent() {
+    return;
+  }
 
-		return this.appService.createEvent(payload, context);
-	}
+  @RabbitRPC({
+    exchange: 'rpc-test-exchange',
+    routingKey: Edit,
+    queue: 'rpc-test-queue',
+    queueOptions: {
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
+    },
+    // queueOptions: {
+    //   channel: 'channel-1',
+    // },
+    // connection: 'conn1',
+  })
+  public async editEvent() {
+    console.log('message arrived');
+    return { response: 'test responssss' };
+  }
 
-	@EventPattern(Edit)
-	public async editEvent(@Payload(WebhookEventPipe) payload: EventPayload, @Ctx() context: RmqContext) {
-
-		return this.appService.editEvent(payload, context);
-	}
-
-	@EventPattern(Remove)
-	public async removeEvent(@Payload(WebhookEventPipe) payload: EventPayload, @Ctx() context: RmqContext) {
-
-		return this.appService.removeEvent(payload, context);
-	}
+  @RabbitRPC({
+    exchange: 'rpc-test-exchange',
+    routingKey: Remove,
+    queue: 'rpc-test-queue',
+    queueOptions: {
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
+    },
+    // queueOptions: {
+    //   channel: 'channel-1',
+    // },
+    // connection: 'conn1',
+  })
+  public async removeEvent() {
+    return;
+  }
 }
